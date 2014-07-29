@@ -1,7 +1,9 @@
 import socket
 import os
+from functools import partial
 
 from usfs.usfs_lib.exceptions import USFSNetException
+from usfs.usfs_lib.info import Console
 
 RX_PORT = os.environ.get('usfs_bind_ip') or '1234'
 
@@ -14,8 +16,11 @@ class USFSNetRX(object):
         self.listen_ip = listen_ip
         self.buffer_size = 1024
         self.listen_port = int(listen_port)
+
         #sock is 'internet type' with the return of the property for listen_protocol
-        self.sock = socket.socket(socket.AF_INET, self._listen_protocol)
+        self._sock = None
+        #socket.socket(socket.AF_INET, self._listen_protocol)
+        self.sock = None
 
     @property
     def listen_protocol(self):
@@ -49,8 +54,22 @@ class USFSNetRX(object):
         else:
             self._listen_ip = ip
 
-    def bind(self):
+    @property
+    def sock(self):
+        return self._sock
 
+    @sock.setter
+    def sock(self, _lp):
+
+        _lp = self._listen_protocol
+
+        #socket.socket(socket.AF_INET, self._listen_protocol)
+        _sockfunc = partial(socket.socket, socket.AF_INET)
+        self._sock = _sockfunc(_lp)
+
+
+    def bind(self):
+        Console.console("Binding a type %s socket to %s:%s" % (self._listen_protocol, self._listen_ip, self.listen_port))
         self.sock.bind((self._listen_ip, self.listen_port))
 
         while True:
