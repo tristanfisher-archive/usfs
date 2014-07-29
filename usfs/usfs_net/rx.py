@@ -60,13 +60,10 @@ class USFSNetRX(object):
 
     @sock.setter
     def sock(self, _lp):
-
         _lp = self._listen_protocol
-
         #socket.socket(socket.AF_INET, self._listen_protocol)
         _sockfunc = partial(socket.socket, socket.AF_INET)
         self._sock = _sockfunc(_lp)
-
 
     def bind(self):
         Console.console("Binding a type %s socket to %s:%s" % (self._listen_protocol, self._listen_ip, self.listen_port))
