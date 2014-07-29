@@ -1,32 +1,32 @@
-##usfs: USFS Shared FileSystem
+usfs: USFS Shared FileSystem
 ==============================
 
 
-##This is a work in progress and is not ready for general use.
+This is a work in progress and is not ready for general use.
 
 -----
 
 `usfs` is a peer-to-peer filesystem that does not require centralized resources.
 
 
-#####How to Use: 
+How to Use:
 
 1. Download and install FUSE for your operating system.
-	
+
 2. Download usfs.
 
-3. Start the usfs server via: 
+3. Start the usfs server via:
 
-4. Start a usfs client using Python 2.7.8.  
+4. Start a usfs client using Python 2.7.8.
 
 
-#####Extending: 
+Extending:
 
 `USFSIOBase` is an abstract base class containing the common methods for interacting with a simple filesystem.
 
 -----
 
-#####Troubleshooting:
+Troubleshooting:
 
 If you receive an error the looks like:
 
@@ -41,5 +41,4 @@ OSX: Get FUSE from: http://osxfuse.github.io/ and follow the instructions on ins
 Linux, Debian-based: `aptitude install fuse`
 
 Other platforms: Find and install fuse.
-
 
