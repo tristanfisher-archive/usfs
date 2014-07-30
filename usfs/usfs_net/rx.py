@@ -65,14 +65,30 @@ class USFSNetRX(object):
         _sockfunc = partial(socket.socket, socket.AF_INET)
         self._sock = _sockfunc(_lp)
 
+    def parse_stream(self, sock_recv, *args, **kwargs):
+    # todo: how to get msg class? first N bytes?, fixed N-char?
+        data, addr = sock_recv
+        print sock_recv[0]
+        print sock_recv
+        print "from %s : %s" % (addr, data)
+
+
     def bind(self):
         Console.console("Binding a type %s socket to %s:%s" % (self._listen_protocol, self._listen_ip, self.listen_port))
         self.sock.bind((self._listen_ip, self.listen_port))
 
         while True:
-            data, addr = self.sock.recvfrom(self.buffer_size)
-            print "from %s : %s" % (addr, data)
+            sock_recv = self.sock.recvfrom(self.buffer_size)
+            self.parse_stream(sock_recv)
 
+# TODO:
+'''
+- define datastructure
+- send callback
+    - if just informative packet, send back general ack
+    - if a request for data, the data is the ack (e.g. yielding access())
+
+'''
 
 if __name__ == '__main__':
     test_socket = USFSNetRX()
