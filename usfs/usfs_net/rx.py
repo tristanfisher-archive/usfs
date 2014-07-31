@@ -1,9 +1,15 @@
 import socket
 import os
+
 from functools import partial
 
+#from . import tx
 from usfs.usfs_lib.exceptions import USFSNetException
+
+#from usfs.usfs_lib.exceptions import USFSNetException
 from usfs.usfs_lib.info import Console
+
+#import tx
 
 RX_PORT = os.environ.get('usfs_bind_ip') or '1234'
 
@@ -65,17 +71,43 @@ class USFSNetRX(object):
         _sockfunc = partial(socket.socket, socket.AF_INET)
         self._sock = _sockfunc(_lp)
 
+    def stub_info(self, data, *args):
+        # Informative messages do not require an acknowledgement.
+        Console.stdout(str(data))
+
+    def stub_io(self, data, addr, *args):
+        # IO messages should respond to the sender with data or an error message.
+        print "io func|" + str(data)
+
+        #tx.USFSNetTX(self.target_hosts )
+
+    def noop(self, *args): pass
+
     def parse_stream(self, sock_recv, *args, **kwargs):
     # todo: how to get msg class? first N bytes?, fixed N-char?
+
+        #Class, message. If we get an io, call the right class.
+        #if we get a noop, do nothing, it's just extra info.
+
+        message_action_lookup = {
+            'io': self.stub_io,
+            'info': self.stub_info,
+            'noop': self.noop
+        }
+
         data, addr = sock_recv
-        print sock_recv[0]
-        print sock_recv
-        print "from %s : %s" % (addr, data)
+
+        try:
+            return message_action_lookup[data](data, addr)
+        except KeyError, e:
+            #or return noop to prevent crashing.
+            return "No handler found for %s" % data
 
 
     def bind(self):
         Console.console("Binding a type %s socket to %s:%s" % (self._listen_protocol, self._listen_ip, self.listen_port))
         self.sock.bind((self._listen_ip, self.listen_port))
+
 
         while True:
             sock_recv = self.sock.recvfrom(self.buffer_size)
