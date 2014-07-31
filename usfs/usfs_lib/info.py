@@ -52,3 +52,4 @@ class Console(object):
     @classmethod
     def stdout(cls, msg, prefix_msg='', **kwargs):
         print(prefix_msg + msg, file=sys.stdout, **kwargs)
+
