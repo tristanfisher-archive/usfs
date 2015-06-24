@@ -1,0 +1,5 @@
+__title__ = 'usfs'
+__version__ = '0.01'
+__author__ = 'Tristan Fisher'
+__license__ = 'Apache 2.0'
+__copyright__ = 'Copyright 2014 Tristan Fisher'

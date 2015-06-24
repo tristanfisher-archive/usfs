@@ -42,3 +42,11 @@ Linux, Debian-based: `aptitude install fuse`
 
 Other platforms: Find and install fuse.
 
+
+-----
+
+TO DO:
+
+- Implement `protobuf <https://code.google.com/p/protobuf/>` on usfs_net classes when the payload is better defined.
+
+- Command line (c++) tool for calling usfs functions (e.g. usfs peer add tristan 162.123.456.789)
